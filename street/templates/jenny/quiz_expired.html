@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+	<title>Jennifer Lawrence</title>
+    <style>
+        body{
+            font-size: 25px;
+        }
+
+        form{
+            font-size: 25px;
+        }
+
+        #new-time{
+            font-size: 20px;
+        }
+
+        button{
+            font-size: 20px;
+            background-color: peru;
+            cursor: pointer;
+        }
+    </style>
+    </head>
+
+<body>
+<h2>Time's Up!</h2>
+<p>Please choose additional time to continue your quiz:</p>
+
+<form method="get" action="{% url 'street:client' %}">
+    <label for="new-time">Add Time:</label>
+    <select name="timer" id="new-time">
+        <option value="300">5 minutes</option>
+        <option value="600">10 minutes</option>
+        <option value="900">15 minutes</option>
+    </select>
+    <button type="submit">Resume Quiz</button>
+</form>
+
+</body>
+</html>

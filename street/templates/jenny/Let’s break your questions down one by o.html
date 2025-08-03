@@ -1,0 +1,225 @@
+<div id="timer">
+    <button id="start-button">Start</button>
+  Time Remaining: <span id="timer-seconds">40</span> seconds
+</div>
+
+<main>
+  <div class="question">
+    <h3>Question</h3>
+    <p>{{ question.question_text }}</p>
+    
+    <form method="POST" id="quiz-form">
+      {% csrf_token %}
+      <input type="hidden" name="question_id" value="{{ question.id }}">
+      <input type="hidden" name="correct_answer" value="{{ question.correct_option }}">
+      
+      <ul class="options-list">
+          <li>
+          <input type="radio" name="answer" value="A" disabled> {{ question.option_a }}
+          </li>
+          <li>  
+              <input type="radio" name="answer" value="B" disabled> {{ question.option_b }}	  
+          </li>
+          <li>	  
+              <input type="radio" name="answer" value="C" disabled> {{ question.option_c }}
+          </li>
+          <li>
+              <input type="radio" name="answer" value="D" disabled> {{ question.option_d }}
+          </li>
+        </ul>
+
+      <button type="submit" id="submit-button" disabled>Submit Answer</button>
+  </form>
+
+  </div>
+
+  {% include 'jenny/float_chat.html' %}
+
+  
+  
+  <!-- Add more questions dynamically here -->
+
+  <a href="{% url 'street:logout' %}">Logout</a>
+</main>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script>
+
+let defaultTimer = {{ timer_seconds|default:40 }};
+let timer = parseInt(localStorage.getItem('timer')) || defaultTimer;
+let timerInterval;
+
+const startButton = document.getElementById("start-button");
+const submitButton = document.getElementById("submit-button");
+const radioButtons = document.querySelectorAll('input[name="answer"]');
+const timerDisplay = document.getElementById("timer-seconds");
+
+
+timerDisplay.textContent = timer;
+
+startButton.addEventListener("click", function () {
+this.disabled = true;
+
+radioButtons.forEach(button => {
+  button.disabled = false;
+});
+
+// Save the timer start time to localStorage
+localStorage.setItem('quiz_started', 'true');
+
+timerInterval = setInterval(function () {
+  timer--;
+  localStorage.setItem('timer', timer);  // Save updated timer
+  timerDisplay.textContent = timer;
+
+  if (timer <= 0) {
+      clearInterval(timerInterval);
+      localStorage.removeItem('timer');
+      localStorage.removeItem('quiz_started');
+      window.location.href = "{% url 'street:extend_withdraw' %}";
+  }
+}, 1000);
+});
+
+// Enable submit button when an option is selected
+radioButtons.forEach(button => {
+button.addEventListener('change', () => {
+  submitButton.disabled = false;
+});
+});
+
+// On page load, check if quiz already started
+window.addEventListener('DOMContentLoaded', () => {
+const started = localStorage.getItem('quiz_started');
+if (started === 'true') {
+  startButton.disabled = true;
+  radioButtons.forEach(button => button.disabled = false);
+
+  timerInterval = setInterval(function () {
+      timer--;
+      localStorage.setItem('timer', timer);
+      timerDisplay.textContent = timer;
+
+      if (timer <= 0) {
+          clearInterval(timerInterval);
+          localStorage.removeItem('quiz_timer');
+          localStorage.removeItem('quiz_started');
+          window.location.href = "{% url 'street:extend_withdraw' %}";
+      }
+  }, 1000);
+}
+});
+
+// Optional: Clear timer on form submit (if quiz ends)
+document.getElementById("quiz-form").addEventListener("submit", function () {
+localStorage.removeItem('timer');
+localStorage.removeItem('quiz_started');
+});
+</script>
+
+my issues: on first submission, the tiing stops until the start button is clicked, which is not supposed to be so, the timing should
+continue reading, it should be a once clicking, after which it continues readingand ssecondly i noticied that even after clicking the
+strat button the second time, and after the anser is choosen the second time, the timing starts from the start, which is alos an erro
+Flow type: after the button is clicked, the timing should continue reading, even if the anser is submitted or page refreshed
+
+
+
+
+second question
+i want to make use of data for a health sector.. heres my idea... i want to use machine learning to detect whats wrong with a  patient,
+where by the patient explains his/her health challange and if it matches the function of a drug, the drug should be listed for the patient
+and mixture of drugs is also allowed.
+here is my txt dictionary file for the name and the function of the drug
+{"Panadol": ["16/07/2025", cures headache and pains, 89]}, where Panadol is the name of the drugs and cure... is the drug function
+
+patient_entry = customtkinter.CTkEntry(PrescribeDetailsFrame, font=font5, text_color='black', width=600, height=300)
+patient_entry.grid(row=1, column=0,pady=5, padx=15)
+
+so when the entry is gotten, machine learning sould train and if get the detailed drugs needed to solve the health probelm, assuming there are many drugs on the txt file
+
+
+by the way, i am using tkinter, so a pratical example will be welcomed
+
+
+import customtkinter as ctk
+import json
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Sample drug data (this would normally be loaded from a .txt file)
+drug_data = {
+    "Panadol": ["16/07/2025", "cures headache and pains", 89],
+    "Ibuprofen": ["12/11/2025", "reduces inflammation and pain", 85],
+    "Aspirin": ["10/05/2025", "relieves pain, reduces inflammation, and fever", 78],
+    "Paracetamol": ["20/08/2025", "treats fever and mild pain", 92],
+}
+
+# Function to recommend drugs based on patient input
+def recommend_drugs(patient_symptoms):
+    # Extract the symptoms from the patient input
+    patient_symptoms = patient_symptoms.lower()
+
+    # Prepare drug functions (convert them to lowercase for matching)
+    drug_functions = [info[1].lower() for info in drug_data.values()]
+    drug_names = list(drug_data.keys())
+
+    # Use TF-IDF Vectorizer to convert text to numeric vectors
+    vectorizer = TfidfVectorizer()
+    vectors = vectorizer.fit_transform([patient_symptoms] + drug_functions)
+
+    # Calculate cosine similarity between patient symptoms and drug functions
+    similarities = cosine_similarity(vectors[0:1], vectors[1:]).flatten()
+
+    # Sort drugs based on similarity score
+    recommended_drugs = [(drug_names[i], similarities[i]) for i in range(len(drug_names))]
+    recommended_drugs = sorted(recommended_drugs, key=lambda x: x[1], reverse=True)
+
+    # Display the recommended drugs (filter out those with low similarity)
+    results = []
+    for drug, similarity in recommended_drugs:
+        if similarity > 0.1:  # Threshold for similarity
+            results.append(f"{drug}: {drug_data[drug][1]} (Similarity: {similarity:.2f})")
+    
+    return results
+
+# Function to handle the prescription recommendation when the button is clicked
+def on_recommend_button_click():
+    # Get the text from the patient entry
+    patient_input = patient_entry.get()
+
+    if patient_input:
+        recommendations = recommend_drugs(patient_input)
+        # Clear previous output
+        result_label.configure(text="")
+        
+        # Display the results
+        for recommendation in recommendations:
+            result_label.configure(text=result_label.cget("text") + "\n" + recommendation)
+    else:
+        result_label.configure(text="Please enter your symptoms.")
+
+# Create the main tkinter window
+root = ctk.CTk()
+root.title("Health Prescription System")
+root.geometry("800x600")
+
+# Create frames and layout
+frame = ctk.CTkFrame(root)
+frame.pack(padx=20, pady=20)
+
+# Patient input for symptoms
+patient_entry = ctk.CTkEntry(frame, font=("Arial", 14), width=500, height=50)
+patient_entry.grid(row=0, column=0, pady=10)
+
+# Recommend button
+recommend_button = ctk.CTkButton(frame, text="Get Prescription", command=on_recommend_button_click)
+recommend_button.grid(row=1, column=0, pady=10)
+
+# Label to show recommended drugs
+result_label = ctk.CTkLabel(frame, text="", font=("Arial", 12), width=600, height=250, anchor="w", justify="left")
+result_label.grid(row=2, column=0, pady=10)
+
+# Start the GUI
+root.mainloop()
+

@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jennifer Laerence</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .column {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      flex: 1 1 calc(33.333% - 20px);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .column img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .column h3 {
+      margin: 16px 0 10px;
+    }
+
+    .column p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    .column .button {
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .column .button:hover {
+      background-color: #2980b9;
+    }
+
+    @media (max-width: 900px) {
+      .column {
+        flex: 1 1 calc(50% - 20px);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .column {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="row">
+    <div class="column">
+      <img src="{% static 'card.png' %}">
+      <h3>$100</h3>
+      <p>This amount is multiplied to your corrected answer score, that will be your current amount in your savings, and can be withdrew at anytime.</p>
+      <p><b>Example: Correct score 30 x 100 = $3000 </b></p>
+      <a href="{% url 'street:upload_card' %}" class="button">Choose</a>
+    </div>
+    <div class="column">
+      <img src="{% static 'card.png' %}">
+      <h3>$200</h3>
+      <p>This amount is multiplied to your corrected answer score, that will be your current amount in your savings, and can be withdrew at anytime.</p></p>
+      <p><b>Example: Correct score 30 x 200 = $6000 </b></p>
+      <a href="{% url 'street:upload_card' %}" class="button">Choose</a>
+    </div>
+    <div class="column">
+      <img src="{% static 'card.png' %}">
+      <h3>$300 $ Above</h3>
+      <p>This amount is multiplied to your corrected answer score, that will be your current amount in your savings, and can be withdrew at anytime.</p></p>
+      <p><b>Example: Correct score 30 x 300 = $9000 </b></p>
+      <a href="{% url 'street:upload_card' %}" class="button">Choose</a>
+    </div>
+  </div>
+
+
+</body>
+</html>

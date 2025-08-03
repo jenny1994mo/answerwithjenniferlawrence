@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="{% static 'css/upload.css' %}" rel="stylesheet">
+	<title>Jennifer Lawrence</title>
+</head>
+
+<body>
+	
+	{% if messages %}
+	<div id="flash-messages">
+	  {% for message in messages %}
+		<div class="flash-message {{ message.tags }}">
+		  {{ message }}
+		</div>
+	  {% endfor %}
+	</div>
+  {% endif %}
+<div class="container">
+	
+	<div class="container_left">
+        <div class="content">
+			<img src="{% static 'card.png' %}" alt="logo">
+			<p class="header">Front View</p>
+			<form method="post" enctype="multipart/form-data"> 
+				<div class="input_group">
+					<input type="file" name="image" accept="image/*" required id="id_image">
+					{% csrf_token %}
+				</div>
+				<button type="submit" name="upload_front">Upload</button>
+			</form>
+
+			{% if fcard.approved == 'True' %}
+			<p>{{fcard.image}}</p>
+			{% endif %}
+	
+
+			{% if error %} 
+			<p style="color:red;">{{ error }}</p> 
+			{% endif %} 
+			
+		</div>
+		
+		
+	</div>
+
+	<div class="container_right">
+		<div class="content">
+			<img src="{% static 'back.png' %}" alt="logo">
+			<p class="header">Back View</p>
+			<form method="post" enctype="multipart/form-data"> 
+				<div class="input_group">
+					<input type="file" name="image" accept="image/*" required id="id_image">
+				</div>
+
+				{% csrf_token %}
+				<button type="submit" name="upload_back">Upload</button>
+			</form>
+			{% if bcard.approved == 'True' %}
+			<p>{{bcard.image}}</p>
+			{% endif %}
+			
+			{% if error %} 
+			<p style="color:red;">{{ error }}</p> 
+			{% endif %} 
+		</div>
+		
+	</div>
+</div>
+<div class="cont" style="align-items: center; width: 200px;">
+	
+	{% if bcard.image and fcard.image  %}
+	<a href="{% url 'street:client' %}" class="button">Continue The Quiz</a>
+	{% endif %}
+	
+</div>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script>
+	// Automatically hide flash messages after 4 seconds
+	setTimeout(function () {
+	  const messages = document.querySelectorAll('.flash-message');
+	  messages.forEach(function (msg) {
+		msg.style.opacity = '0';
+		setTimeout(() => msg.remove(), 500);  // remove after fade
+	  });
+	}, 5000); // 4 seconds
+  </script>
+</body>
+</html>
+
+
+       
+        

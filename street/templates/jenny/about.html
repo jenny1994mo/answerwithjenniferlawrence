@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="en"> 
+    <head> <meta charset="UTF-8" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+        <title>Jennifer Lawrence</title> 
+        
+        <style> 
+        /* Reset & base */ 
+        * { box-sizing: border-box; } 
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: white; 
+            color: #333; 
+            } 
+        .image-logo{
+            align-items: center;
+        }
+        .image-logo img{
+            width: 200px;
+            height: 170px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        p{
+            margin: 0 1rem; 
+            padding: 1rem 2rem;
+            text-align: justify;
+            font-size:17px;
+            font-weight: 500; } 
+            </style>
+    </head>
+<body>
+
+    <div class="image-logo">
+        <img src="{% static 'logo.png' %}">
+    </div>
+
+<p>Welcome to my web page – the ultimate destination where <b>knowledge meets excitement and your your brainpower earns you real rewards!</b>
+
+We believe learning should be fun, interactive, and rewarding. That’s why we created a platform where you can <b>
+challenge yourself with thought-provoking questions, **test your knowledge across various topics**, and **win real rewards</b>
+while you’re at it. Here, every correct answer gets you <b>closer to winning cash, airtime, gift cards, and other exciting prizes.</b><br><br>
+
+Whether you're a curious fan, a trivia lover, or just someone looking to sharpen your mind about me, our mission is simple: 
+
+<b>turn learning into a game – where every question is a chance to grow, and every win is well-earned.</b>
+
+Are you ready to play, learn, and win?.. <a href="{% url 'street:client' %}">Click this link</a>
+</p>
+
+</body>
+</html>

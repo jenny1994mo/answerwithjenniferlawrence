@@ -1,0 +1,405 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="{% static 'css/login.css' %}" rel="stylesheet">
+	<title>Jennifer Lawrence</title>
+
+	<style>
+		* {
+		  margin: 0;
+		  padding: 0;
+		  box-sizing: border-box;
+		  font-family: Arial, sans-serif;
+		}
+	
+		body {
+		  background-color: #f4f4f4;
+		  display: flex;
+		  flex-direction: column;
+		  min-height: 100vh;
+		}
+	
+		header {
+		  background-color: #2c3e50;
+		  color: white;
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		  padding: 1rem 2rem;
+		  flex-wrap: wrap;
+		}
+	
+		.header-left,
+		.header-center,
+		.header-right {
+		  flex: 1 1 100px;
+		  text-align: center;
+		}
+	
+		.header-left {
+		  text-align: left;
+		}
+	
+		.header-right {
+		  text-align: right;
+		}
+	
+		main {
+		  padding: 2rem;
+		  flex: 1;
+		}
+	
+		.question {
+		  background: white;
+		  padding: 1rem;
+		  margin-bottom: 1rem;
+		  border-radius: 5px;
+		  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+		}
+
+		.logout-button {
+		background-color: #e74c3c;
+		color: white;
+		padding: 0.4rem 0.8rem;
+		border-radius: 4px;
+		text-decoration: none;
+		font-weight: bold;
+		margin-left: 1rem;
+		transition: background 0.3s;
+		}
+
+		.options-list {
+		list-style: none;
+		padding: 0;
+		margin: 1rem 0;
+		}
+
+		.options-list li {
+		float: left;
+		background: #ecf0f1;
+		
+		border-radius: 4px;
+		transition: background 0.3s;
+		}
+
+		.options-list li:hover {
+		background: #d0d7de;
+		}
+
+		button[type="submit"] {
+		margin-top: 1rem;
+		padding: 0.5rem 1rem;
+		background-color: #2980b9;
+		color: white;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		font-weight: bold;
+		}
+
+		button[type="submit"]:disabled {
+		background-color: #95a5a6;
+		cursor: not-allowed;
+		}
+
+		.logout-button:hover {
+		background-color: #c0392b;
+		}
+
+		#timer {
+		background-color: #f1c40f;
+		color: #2c3e50;
+		font-weight: bold;
+		padding: 0.8rem 1rem;
+		text-align: center;
+		font-size: 1.2rem;
+		margin: 1rem 2rem;
+		border-radius: 8px;
+		box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+		}
+
+		button{
+			margin-top: 1rem; 
+            background: #7b7c7c; 
+            color: white; 
+            border: none; 
+            padding: 0.5rem 1rem; 
+            font-weight: 600; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            text-decoration: none; 
+		}
+
+		.button{
+			margin-top: 1rem; 
+            background: #059c9c; 
+            color: white; 
+            border: none; 
+            padding: 0.5rem 1rem; 
+            font-weight: 600; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            text-decoration: none; 
+		}
+
+		button,
+		.logout-button,
+		.button,
+		.options-list li {
+		transition: all 0.3s ease;
+		}
+
+		/* Box sizing reset */
+		*, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  /* Flash message container pinned to top center */
+  #flash-messages {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999; /* High enough to override everything */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    pointer-events: none; /* So it doesn’t block clicks below */
+  }
+
+  .flash-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 260px;
+    max-width: 400px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    color: #fff;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 15px;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    transition: opacity 0.6s ease;
+    pointer-events: auto; /* Allow close buttons if added */
+  }
+
+  .flash-message.success { background-color: #4caf50; }
+  .flash-message.error   { background-color: #e53935; }
+  .flash-message.warning { background-color: #f9a825; }
+  .flash-message.info    { background-color: #2196f3; }
+
+  .flash-message .icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  @keyframes fadeIn {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+		@media (max-width: 768px) {
+		  header {
+			flex-direction: column;
+			align-items: flex-start;
+		  }
+	
+		  .header-left,
+		  .header-center,
+		  .header-right {
+			text-align: left;
+			flex: 1 1 100%;
+			margin-bottom: 0.5rem;
+		  }
+		}
+
+		@media (max-width: 768px) {
+		header {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.header-left,
+		.header-center,
+		.header-right {
+			text-align: left;
+			flex: 1 1 100%;
+			margin-bottom: 0.5rem;
+		}
+
+		#timer {
+			font-size: 1rem;
+			margin: 1rem;
+		}
+
+		main {
+			padding: 1rem;
+		}
+
+		.question {
+			padding: 1rem;
+		}
+
+		.logout-button {
+			margin-top: 0.5rem;
+		}
+		}
+	  </style>
+</head>
+
+<body>
+	<header>
+		<div class="header-left">Questions Answered: <strong>{{ question }}</strong></div>
+		<div class="header-center">Welcome, <strong>{{ request.user.username }}</strong></div>
+		<div class="header-right">Amount: <strong>$ {{ quiz_result.score }}</strong>
+		<br> <br>
+		
+			{% if bcard.approved and fcard.approved  %}
+		<a href="{% url 'street:withdraw' %}" class="button">Withdraw</a>
+		{% endif %}
+
+		
+		</div>
+
+		{% if messages %}
+		<div id="flash-messages">
+			{% for message in messages %}
+			<div class="flash-message {{ message.tags }}">
+				{{ message }}
+			</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+		
+
+	  </header>
+
+	  
+
+	  
+	  <div id="timer">
+		  <button id="start-button">Start</button>
+        Time Remaining: <span id="timer-seconds">300</span> seconds
+    </div>
+	
+	  <main>
+		<div class="question">
+		  <h3>Question</h3>
+		  <p>{{ question.question_text }}</p>
+		  
+		  <form method="POST" id="quiz-form">
+			{% csrf_token %}
+			<input type="hidden" name="question_id" value="{{ question.id }}">
+			<input type="hidden" name="correct_answer" value="{{ question.correct_option }}">
+			
+			<ul class="options-list">
+				<li>
+				<input type="radio" name="answer" value="A" disabled> {{ question.option_a }}
+				</li>
+				<li>  
+					<input type="radio" name="answer" value="B" disabled> {{ question.option_b }}	  
+				</li>
+				<li>	  
+					<input type="radio" name="answer" value="C" disabled> {{ question.option_c }}
+				</li>
+				<li>
+					<input type="radio" name="answer" value="D" disabled> {{ question.option_d }}
+				</li>
+			  </ul>
+
+			<button type="submit" id="submit-button" disabled>Submit Answer</button>
+		</form>
+	
+		</div>
+
+		<!-- Add more questions dynamically here -->
+
+		<a href="{% url 'street:logout' %}">Logout</a>
+	  </main>
+	 
+	  <script src="{% static 'js/jquery.js' %}"></script>
+<script>
+ let defaultTimer = {{ timer_seconds|default:300 }};
+  let timer = parseInt(localStorage.getItem('timer')) || defaultTimer;
+  let timerInterval;
+
+  const startButton = document.getElementById("start-button");
+  const submitButton = document.getElementById("submit-button");
+  const radioButtons = document.querySelectorAll('input[name="answer"]');
+  const timerDisplay = document.getElementById("timer-seconds");
+
+  // Set initial timer display
+  timerDisplay.textContent = timer;
+
+  // Start the timer when the start button is clicked
+  startButton.addEventListener("click", function () {
+    this.disabled = true;  // Disable the Start button after clicked
+
+    // Enable the radio buttons after the start
+    radioButtons.forEach(button => {
+      button.disabled = false;
+    });
+
+    // Mark quiz as started in localStorage
+    localStorage.setItem('quiz_started', 'true');
+
+    // Start the timer
+    timerInterval = setInterval(function () {
+      timer--;
+      localStorage.setItem('timer', timer);  // Save updated timer to localStorage
+      timerDisplay.textContent = timer;
+
+      if (timer <= 0) {
+        clearInterval(timerInterval);  // Stop timer when time is up
+        localStorage.removeItem('timer');
+        localStorage.removeItem('quiz_started');
+        window.location.href = "{% url 'street:extend_withdraw' %}";  // Redirect when time is up
+      }
+    }, 1000);
+  });
+
+  // Enable submit button when an option is selected
+  radioButtons.forEach(button => {
+    button.addEventListener('change', () => {
+      submitButton.disabled = false;  // Enable submit button when an option is selected
+    });
+  });
+
+  // Prevent multiple quiz starts or reset after submission
+  window.addEventListener('DOMContentLoaded', () => {
+    const started = localStorage.getItem('quiz_started');
+    if (started === 'true') {
+      startButton.disabled = true;  // Disable start button if quiz already started
+      radioButtons.forEach(button => button.disabled = false);  // Enable the options
+
+      // Continue the timer from where it left off
+      timerInterval = setInterval(function () {
+        timer--;
+        localStorage.setItem('timer', timer);  // Save updated timer to localStorage
+        timerDisplay.textContent = timer;
+
+        if (timer <= 0) {
+          clearInterval(timerInterval);  // Stop timer when time is up
+          localStorage.removeItem('timer');
+          localStorage.removeItem('quiz_started');
+          window.location.href = "{% url 'street:extend_withdraw' %}";  // Redirect when time is up
+        }
+      }, 1000);
+    }
+  });
+
+  // Disable submit button if no option is selected
+  document.getElementById("quiz-form").addEventListener("submit", function () {
+    // Disable submit button after form submission
+    submitButton.disabled = true;
+    // We don't need to reset the timer as it continues running
+  });
+
+</script>
+</body>
+
+</html>

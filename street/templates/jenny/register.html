@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="{% static 'css/login.css' %}" rel="stylesheet">
+	<title>Jennifer Lawrence</title>
+</head>
+
+<body>
+	{% if messages %}
+  <div id="flash-messages">
+    {% for message in messages %}
+      <div class="flash-message {{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="container">
+	
+	<div class="container_left">
+		<img src="{% static 'jenny.png' %}">
+		<h2>Jennifer Lawrence</h2>
+		<p>Giving back to the society and restoring hope to the hopeless</p>
+	</div>
+
+	<div class="container_right">
+		<div class="content">
+			<img src="{% static 'logo.png' %}" alt="logo">
+			<p class="header">Welcome to Jennifer Lawrence World</p>
+			<form method="post"> 
+				<div class="input_group">
+					<input type="text" name="username" maxlength="150" required id="id_username">
+					<label for="id_username">Input your username</label>
+				</div>
+
+                <div class="input_group">
+					<input type="text" name="first_name" maxlength="150" id="id_first_name">
+					<label for="id_first_name">Input First name</label>
+				</div>
+
+                <div class="input_group">
+					<input type="text" name="last_name" maxlength="150" id="id_last_name">
+					<label for="id_last_name">Input Last name</label>
+				</div>
+
+                <div class="input_group">
+					<input type="email" name="email" maxlength="254" id="id_email">
+					<label for="id_email">Input Email address</label>
+				</div>
+
+				<div class="input_group">
+					<input type="password" name="password" required id="id_password">
+					<label for="id_password">Input your password</label>
+				</div>
+
+                <div class="input_group">
+					<input type="password" name="password2" required id="id_password2">
+					<label for="id_password2">Repeat password</label>
+				</div>
+				{% csrf_token %}
+
+				<button type="submit">Register</button>
+				<p>If registerd, <a href="{% url 'street:login' %}">Login</a></p>
+			</form>
+
+			{% if error %} 
+			<p style="color:red;">{{ error }}</p> 
+			{% endif %} 
+		</div>
+		
+	</div>
+
+</div>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script>
+	// Automatically hide flash messages after 4 seconds
+	setTimeout(function () {
+	  const messages = document.querySelectorAll('.flash-message');
+	  messages.forEach(function (msg) {
+		msg.style.opacity = '0';
+		setTimeout(() => msg.remove(), 500);  // remove after fade
+	  });
+	}, 5000); // 4 seconds
+  </script>
+</body>
+</html>
+
+
+       
+        

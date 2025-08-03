@@ -1,0 +1,304 @@
+
+{% load static %}
+<!DOCTYPE html> <html lang="en"> 
+    <head> <meta charset="UTF-8" /> 
+        <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+        <title>Jennifer Lawrence - Test Your Knowledge</title> 
+        
+        <style> 
+        /* Reset & base */ 
+        * { box-sizing: border-box; } 
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #f0f4f8; color: #333; 
+            } 
+            
+        a { 
+            color: #007acc; 
+            text-decoration: none; 
+            } 
+        a:hover { 
+            text-decoration: underline; 
+        } 
+        
+        header { 
+            background: #004a99; 
+            color: white; 
+            padding: 1rem 2rem; 
+            text-align: center; 
+            } 
+        
+        header h1 { 
+            margin: 0; 
+            font-weight: 700; 
+            letter-spacing: 1.5px; 
+        } 
+        
+        nav { 
+            margin-top: 0.5rem; 
+        } 
+        
+        nav a { 
+            margin: 0 1rem; 
+            font-weight: 600; 
+            color: rgb(87, 179, 240);
+        } 
+        
+        main { 
+            max-width: 1100px; 
+            margin: 2rem auto; 
+            padding: 0 1rem; } 
+            
+        /* Hero section */ 
+        .hero { 
+            background: url("{% static 'wall.png' %}") no-repeat center center/cover; 
+            color: white; 
+            border-radius: 10px; 
+            padding: 4rem 2rem; 
+            text-align: center; 
+            box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.4); 
+        } 
+        .hero h2 { 
+            font-size: 2.5rem; 
+            margin-bottom: 0.5rem; 
+        } 
+        .hero p { 
+            font-size: 1.2rem; 
+            max-width: 600px; 
+            margin: 0 auto 2rem; 
+        } 
+        .button { 
+            background: #007acc; 
+            color: white; 
+            padding: 0.75rem 1.5rem; 
+            font-weight: 600; 
+            border-radius: 5px; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 1rem; 
+            transition: background 0.3s ease;
+            text-decoration: none; } 
+        .button:hover { 
+            background: #005f99; } 
+        /* Sections */ 
+        section { 
+            background: white; 
+            padding: 2rem 2rem 2rem 2rem; 
+            margin-bottom: 2rem; 
+            border-radius: 10px; 
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+        h3 { 
+            margin-top: 0; 
+            color: #004a99; 
+            font-weight: 700; }
+        
+        /* Featured quizzes */ 
+        .quiz-list { 
+            display: flex; 
+            gap: 1.5rem; 
+            flex-wrap: wrap; 
+            justify-content: center; } 
+            
+        .quiz-card { 
+            flex: 1 1 280px; 
+            background: #e9f0fb; 
+            border-radius: 10px; 
+            padding: 1rem; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            transition: transform 0.2s ease; } 
+        
+        .quiz-card:hover { 
+            transform: scale(1.03); } 
+        
+        .quiz-card img { 
+            width: 100%; 
+            max-height: 160px; 
+            object-fit: cover; 
+            border-radius: 8px; 
+            margin-bottom: 1rem; } 
+            
+        .quiz-card h4 { 
+            margin: 0 0 0.5rem 0; 
+            text-align: center; } 
+            
+        .quiz-card p { 
+            text-align: center; 
+            flex-grow: 1; } 
+            
+        .quiz-card .button { 
+            margin-top: 1rem; 
+            background: #7b7c7c; 
+            color: white; 
+            border: none; 
+            padding: 0.5rem 1rem; 
+            font-weight: 600; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            transition: background 0.3s ease;
+            text-decoration: none; } 
+            
+        .quiz-card .button:hover { 
+            background: #005f99; } 
+            
+        /* Testimonials */ 
+        .testimonials { 
+            display: flex; 
+            gap: 2rem; 
+            flex-wrap: wrap; 
+            justify-content: center; } 
+            
+        .testimonial { 
+            background: #f1f7ff; 
+            border-radius: 10px; 
+            padding: 1rem 1.5rem; 
+            flex: 1 1 320px; 
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05); 
+            display: flex; 
+            gap: 1rem; align-items: center; } 
+        
+        .testimonial img { 
+            border-radius: 50%; 
+            width: 70px; 
+            height: 70px; 
+            object-fit: cover; } 
+            
+        .testimonial-content { 
+            flex: 1; } 
+            
+        .testimonial-name { 
+            font-weight: 700; 
+            margin-bottom: 0.25rem; 
+            color: #004a99; } 
+            
+        .testimonial-text { 
+            font-style: italic; 
+            color: #333; } 
+
+        /* Footer */ 
+        footer { 
+            text-align: center; 
+            padding: 1.5rem 1rem; 
+            background: #004a99; 
+            color: white; font-size: 0.9rem; } 
+            
+        /* Responsive */ 
+        
+        @media (max-width: 768px) 
+        { 
+            .quiz-list, 
+            .testimonials { 
+                flex-direction: 
+                column; align-items: center; } } 
+        
+
+        </style> 
+        </head> 
+        <body> 
+            <header> 
+                <h1>Answer and Earn</h1> 
+                <nav> 
+                    <a href="{% url 'street:register' %}">Register</a> 
+                    <a href="{% url 'street:client' %}">Quiz</a>  
+                    <a href="{% url 'street:about' %}">About</a>
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'street:logout' %}">Logout ({{user.username}})</a>  
+                    {% endif %}
+                </nav> 
+            
+        </header> 
+        <main> 
+            <section class="hero" role="banner"> 
+                <h2>How Much Do You Know of Jennifer Lawrence? Test Your Knowledge & Win!</h2> 
+                <p>Explore thousands of quizzes, challenge yourself, and learn new facts every day, and win!.</p> 
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'street:client' %}" class="button">Play</a>
+                {% else %}
+                <a href="{% url 'street:client' %}" class="button">Login</a>
+                {% endif %}
+            </section> <section aria-labelledby="featured-quizzes"> 
+                <h3 id="featured-quizzes">Featured Quizzes</h3> 
+                
+                
+                <div class="quiz-list"> <article class="quiz-card" tabindex="0"> 
+                    <img src="{% static 'film.png' %}" alt="film" /> 
+                    <h4>General Filmography</h4> 
+                    <p>Test your knowledge about filmography and more!</p> 
+                    <a href="{% url 'street:client' %}" class="button">Take Quiz</a>
+                
+                </article> 
+                <article class="quiz-card" tabindex="0"> 
+                    <img src="{% static 'game.png' %}" alt="game" /> 
+                    <h4>Hunger Games Series</h4> 
+                    <p>How well do you know major hunger games series?</p> 
+                    <a href="{% url 'street:client' %}" class="button">Take Quiz</a> 
+                
+                </article> 
+                
+                <article class="quiz-card" tabindex="0"> 
+                    <img src="{% static 'scene.png' %}" alt="scene" /> 
+                    <h4>Behind the Scenes</h4>
+                    <p>From scenes, to behind scences, test your reading IQ.</p> 
+                    <a href="{% url 'street:client' %}" class="button">Take Quiz</a> 
+                
+                </article> 
+            </div> 
+        </section> 
+        
+        <section aria-labelledby="user-testimonials"> 
+            <h3 id="user-testimonials">What Our Users Say</h3> 
+            <div class="testimonials"> 
+                <div class="testimonial" tabindex="0"> 
+                    <img src="{% static 'two.png' %}" alt="Maya Patel" /> 
+                    <div class="testimonial-content"> 
+                        <p class="testimonial-name">Maya Patel</p> 
+                        <p class="testimonial-text">"I never thought answering five questions online could lead to something real... until it did."</p> 
+                    </div> 
+                </div> 
+                
+                <div class="testimonial" tabindex="0"> 
+                    <img src="{% static 'one.png' %}" alt="David Chen" /> 
+                    <div class="testimonial-content"> 
+                        <p class="testimonial-name">David Chen</p>
+                        <p class="testimonial-text">" i'm just regular person, and big fan of Jennifer Lawrence, who took a shot—and it paid off.
+                            One evening, i came across <strong>Answer and Win by Jennifer Lawrence</strong> and decided to give it a try.
+                            All i had to do was: Sign up, Answer simple but fun questions and boom — i became a winner!"</p> 
+                    </div> 
+                </div> 
+                
+                <div class="testimonial" tabindex="0"> 
+                    <img src="{% static 'three.png' %}" alt="Lena Schmidt" /> 
+                    <div class="testimonial-content"> 
+                        <p class="testimonial-name">Lena Schmidt</p> 
+                        <p class="testimonial-text">"No fees. No gimmicks. Just knowledge, honesty, and a chance.
+                            If i could do it, <strong>so can you.</strong>"</p> 
+                    </div> 
+                </div> 
+
+            
+                <div class="testimonial" tabindex="0"> 
+                    <img src="{% static 'four.png' %}" alt="Overire Paul" /> 
+                    <div class="testimonial-content"> 
+                        <p class="testimonial-name">Overire Paul</p> 
+                        <p class="testimonial-text">" If you're reading this, you're already one step closer to becoming the next name on the winners' list. All it takes is a little courage, a little knowledge—and a belief that you too can win."</p> 
+                    </div> 
+                </div> 
+
+            </div> 
+        
+        </section> 
+    </main>
+
+    
+    
+    <footer> &copy; 2025 Azretyg.  </footer>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    
+    
+    </body> 
+
+    </html> 

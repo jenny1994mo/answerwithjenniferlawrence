@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Boss Dashboard</title>
+    <link href="{% static 'css/upload.css' %}" rel="stylesheet">
+    <style>
+        html {
+    scroll-behavior: smooth;
+  }
+
+  /* Fixed navigation styling */
+  .fixed-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #333;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    z-index: 9999;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .fixed-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.3s;
+  }
+
+  .fixed-nav a:hover {
+    background-color: #4caf50;
+  }
+
+  /* Add top padding to sections so content isn't hidden under nav */
+  section {
+    padding: 80px 20px 60px;
+    min-height: 100vh;
+    border-bottom: 1px solid #ccc;
+  }
+
+  #active p{
+    font-size: 20px;
+  }
+    </style>
+</head>
+
+<body>
+    <nav class="fixed-nav">
+        <a href="#active">Active Users</a>
+        <a href="#card">Approve Card</a>
+        <a href="#email">Reply Comment</a>
+        <a href="{% url 'street:logout' %}">Logout</a>
+        <a href="{% url 'street:messenger' %}">
+          <span class="badge">{{ unread_count }}</span>
+        </a>
+      </nav>
+      
+      <!-- Page Sections -->
+      <section id="active">
+        <h2>Active Users</h2>
+        {% for profile in active_clients %}
+           <a href="{% url 'street:user_active' profile.id %}"> <p>{{ profile.user.username }} ({{ profile.role }})</p></a>
+           
+        {% empty %}
+            <p>No active clients found.</p>
+        {% endfor %}
+
+        <ul>
+          {% for user in user_chat %}
+          <li>
+            <a href="{% url 'street:messenger' %}?user_id={{ user.id }}">{{ user.username }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+      
+      <section id="card">
+        <h2>Approve Card</h2>
+        <div class="container">
+
+            <div class="container_left">
+                <div class="content">
+                    <p class="header">Front View</p>
+                    {% for card in front_cards %}
+                        <div>
+                        <img src="{{ card.image.url }}" width="200" />
+                        <form method="post" action="{% url 'street:approve_front' card.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Approve</button>
+                        </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+	
+            <div class="container_right">
+                <div class="content">
+                    <p class="header">Back View</p>
+                    {% for card in back_cards %}
+                        <div>
+                        <img src="{{ card.image.url }}" width="200" />
+                        <form method="post" action="{% url 'street:approve_back' card.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Approve</button>
+                        </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+      </section>
+      
+      <section id="email">
+        <h2>Reply Comment</h2>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="send_email" value="true" />
+            <input type="text" name="subject" placeholder="Subject" required /><br />
+            <input type="email" name="recipient" placeholder="Recipient Email" required /><br />
+            <textarea name="message" placeholder="Your message" rows="5" required></textarea><br />
+            <button type="submit">Send Email</button>
+          </form>
+      </section>
+
+      
+</body>
+</html>
