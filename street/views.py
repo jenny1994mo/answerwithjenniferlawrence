@@ -83,7 +83,9 @@ def quiz_expired(request):
 
 @login_required
 def withdraw_time_extension(request):
-    return render(request, 'jenny/withdraw_extension.html')
+    fcard = FrontCard.objects.filter(user=request.user).first()
+    bcard = BackCard.objects.filter(user=request.user).first()
+    return render(request, 'jenny/withdraw_extension.html',{'fcard':fcard, 'bcard':bcard})
 
 
 
@@ -94,7 +96,7 @@ def client_dashboard(request):
     if request.user.profile.role != 'client': 
         return redirect('street:hustler')
 # 1800
-    default_timer = 40  # 30 minutes
+    default_timer = 300  # 30 minutes
     timer = request.GET.get('timer')
     try:
         timer = int(timer)
@@ -260,48 +262,6 @@ def approve_back(request, card_id):
     card.approved = True
     card.save()
     return redirect('street:hustler')
-
-
-
-@login_required
-def send_message(request):
-    user = request.user
-    representative = assign_hustler(user)
-    admin_user = User.objects.get(username = representative)
-    print(admin_user)
-
-    if request.user == admin_user:
-        messages = ChatMessage.objects.filter(
-            Q(sender=admin_user) | Q(receiver = admin_user)
-        ).order_by('timestamp')
-    
-    elif request.user != admin_user:
-        messages = ChatMessage.objects.filter(
-            (Q(sender=request.user) & Q(receiver=admin_user)) |
-            (Q(sender=admin_user) & Q(receiver=admin_user))
-        ).order_by('timestamp')
-
-
-    else:
-        messages = ChatMessage.objects.filter(
-            (Q(sender=request.user) & Q(receiver=admin_user)) |
-            (Q(sender=admin_user) & Q(receiver=admin_user))
-        ).order_by('timestamp')
-
-    if request.method == "POST":
-        receiver_id = request.POST.get("receiver_id")
-        content = request.POST.get("content")
-        receiver = admin_user
-        
-        
-        ChatMessage.objects.create(sender=request.user,receiver=receiver,content=content)
-        return JsonResponse({'status': 'success'})
-    
-    return render(request, 'jenny/messenger.html', {
-            
-            'messages': messages,
-            'partner': admin_user
-        })
 
 
 

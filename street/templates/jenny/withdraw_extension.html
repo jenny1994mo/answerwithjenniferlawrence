@@ -136,7 +136,12 @@
 
     <div class="column">
       <img src="{% static 'money.jpg' %}">
+      {% if bcard.approved and fcard.approved  %}
       <a href="{% url 'street:withdraw' %}" class="button">Withdraw Cash</a>
+      {% else %}
+      <a href="#" class="button">No Withdrawal</a>
+      {% endif %}
+
     </div>
     
   </div>
